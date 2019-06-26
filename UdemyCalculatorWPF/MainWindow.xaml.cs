@@ -30,7 +30,6 @@ namespace UdemyCalculatorWPF
             acButton.Click += AcButton_Click;
             negativeButton.Click += NegativeButton_Click;
             percentButton.Click += PercentButton_Click;
-            equalsButton.Click += EqualsButton_Click;
         }
 
         private void EqualsButton_Click(object sender, RoutedEventArgs e)
@@ -38,17 +37,26 @@ namespace UdemyCalculatorWPF
             double newNumber;
             if (double.TryParse(resultLabel.Content.ToString(), out newNumber))
             {
+                System.Diagnostics.Debug.WriteLine("lastNumber: " + lastNumber + ", newNumber: " + newNumber + ", selectedOperator: " + selectedOperator );
                 switch (selectedOperator)
                 {
                     case SelectedOperator.Addition:
+                        
+                        result = SimpleMath.Add(lastNumber, newNumber);
                         break;
                     case SelectedOperator.Subtraction:
+                        result = SimpleMath.Subtract(lastNumber, newNumber);
                         break;
                     case SelectedOperator.Multiplication:
+                        result = SimpleMath.Multiply(lastNumber, newNumber);
                         break;
                     case SelectedOperator.Division:
+                        result = SimpleMath.Divide(lastNumber, newNumber);
                         break;
                 }
+
+                resultLabel.Content = result.ToString();
+                
             }
 
         }
@@ -57,7 +65,7 @@ namespace UdemyCalculatorWPF
         {
             if (double.TryParse(resultLabel.Content.ToString(), out lastNumber))
             {
-                lastNumber = lastNumber / 100;
+                lastNumber /= 100;
                 resultLabel.Content = lastNumber.ToString();
             }
         }
@@ -66,7 +74,7 @@ namespace UdemyCalculatorWPF
         {
             if (double.TryParse(resultLabel.Content.ToString(), out lastNumber))
             {
-                lastNumber = lastNumber * -1;
+                lastNumber *= -1;
                 resultLabel.Content = lastNumber.ToString();
             }
         }
@@ -90,6 +98,11 @@ namespace UdemyCalculatorWPF
             if (sender.Equals(addButton)) selectedOperator = SelectedOperator.Addition;
             if (sender.Equals(subtractButton)) selectedOperator = SelectedOperator.Subtraction;
             if (sender.Equals(divideButton)) selectedOperator = SelectedOperator.Division;
+        }
+
+        private void DecimalButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!resultLabel.Content.ToString().Contains(".")) resultLabel.Content = $"{resultLabel.Content}.";
         }
 
         private void NumberButton_Click(object sender, RoutedEventArgs e)
@@ -128,22 +141,23 @@ namespace UdemyCalculatorWPF
 
     public class SimpleMath
     {
-        public double Add(double firstNumber, double secondNumber)
+
+        public static double Add(double firstNumber, double secondNumber)
         {
             return firstNumber + secondNumber;
         }
 
-        public double Subtract(double firstNumber, double secondNumber)
+        public static double Subtract(double firstNumber, double secondNumber)
         {
             return firstNumber - secondNumber;
         }
 
-        public double Multiply(double firstNumber, double secondNumber)
+        public static double Multiply(double firstNumber, double secondNumber)
         {
             return firstNumber * secondNumber;
         }
 
-        public double Divide(double firstNumber, double secondNumber)
+        public static double Divide(double firstNumber, double secondNumber)
         {
             return firstNumber / secondNumber;
         }

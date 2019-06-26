@@ -85,6 +85,7 @@
         />
         <Button
             x:Name="equalsButton"
+            Click="EqualsButton_Click"
             Content="="
             Margin="5"
             Grid.Row="5"
@@ -92,6 +93,7 @@
         />
         <Button
             x:Name="decimalButton"
+            Click="DecimalButton_Click"
             Content="."
             Margin="5"
             Grid.Row="5"
